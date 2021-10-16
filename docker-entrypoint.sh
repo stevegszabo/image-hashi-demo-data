@@ -2,10 +2,15 @@
 set -Eeo pipefail
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
+PROFILE=/vault/secrets/config
+
+[ -f $PROFILE ] && source $PROFILE
+
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
 #  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+
 file_env() {
         local var="$1"
         local fileVar="${var}_FILE"
