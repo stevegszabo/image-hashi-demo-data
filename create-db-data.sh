@@ -2,7 +2,9 @@
 
 set -o errexit
 
-POSTGRES_USER=${POSTGRES_USER:-postgres}
+PROFILE=/vault/secrets/config
+
+[ -f $PROFILE ] && source $PROFILE
 
 psql -v ON_ERROR_STOP=1 -U $POSTGRES_USER <<-EOF
     CREATE DATABASE posts;
