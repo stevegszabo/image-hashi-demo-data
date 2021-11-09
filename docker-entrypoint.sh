@@ -3,8 +3,12 @@ set -Eeo pipefail
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
 PROFILE=/vault/secrets/config
+USRNAME=$(id -u)
 
 [ -f $PROFILE ] && source $PROFILE
+
+printf "USRNAME: [%s]\n" "$USRNAME"
+printf "CMDARGS: [%s]\n" "$@"
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
