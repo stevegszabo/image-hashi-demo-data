@@ -39,16 +39,19 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'postgres' ] && [ "$(id -u)" = '0' ]; then
+        printf "PGDATA: [%s]\n" "$PGDATA"
         mkdir -p "$PGDATA"
         chown -R postgres "$PGDATA"
         chmod 700 "$PGDATA"
 
+        printf "/var/run/postgresql\n"
         mkdir -p /var/run/postgresql
         chown -R postgres /var/run/postgresql
         chmod 775 /var/run/postgresql
 
         # Create the transaction log directory before initdb is run (below) so the directory is owned by the correct user
         if [ "$POSTGRES_INITDB_WALDIR" ]; then
+                printf "POSTGRES_INITDB_WALDIR: [%s]\n" "$POSTGRES_INITDB_WALDIR"
                 mkdir -p "$POSTGRES_INITDB_WALDIR"
                 chown -R postgres "$POSTGRES_INITDB_WALDIR"
                 chmod 700 "$POSTGRES_INITDB_WALDIR"
