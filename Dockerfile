@@ -4,6 +4,7 @@ WORKDIR /
 
 ENV VERSION=1017
 ENV PGDATA=/database/data
+ENV RELEASE=123
 
 COPY create-db-data.sh /docker-entrypoint-initdb.d/init-db-data.sh
 COPY docker-entrypoint.sh /docker-entrypoint.sh
