@@ -5,7 +5,13 @@ set -Eeo pipefail
 PROFILE=/vault/secrets/config
 USRNAME=$(id -u)
 
-[ -f $PROFILE ] && source $PROFILE
+if [ -f $PROFILE ]; then
+    source $PROFILE
+else
+    POSTGRES_USER=user
+    POSTGRES_PASSWORD=pass
+    export POSTGRES_USER POSTGRES_PASSWORD
+fi
 
 printf "USRNAME: [%s]\n" "$USRNAME"
 printf "CMDARGS: [%s]\n" "$@"
