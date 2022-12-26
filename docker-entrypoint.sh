@@ -6,6 +6,7 @@ PROFILE=/vault/secrets/config
 USRNAME=$(id -u)
 
 if [ -f $PROFILE ]; then
+    printf "Source: [%s]\n" $PROFILE
     source $PROFILE
 else
     POSTGRES_USER=mydbuser
