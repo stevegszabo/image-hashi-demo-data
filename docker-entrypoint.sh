@@ -14,8 +14,13 @@ else
     export POSTGRES_USER POSTGRES_PASSWORD
 fi
 
+printf "===========================================\n"
+printf "boot\n"
+printf "===========================================\n"
+printf "BASH_SOURCE: [%s]\n" "$BASH_SOURCE"
 printf "USRNAME: [%s]\n" "$USRNAME"
 printf "CMDARGS: [%s]\n" "$@"
+printf "===========================================\n"
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
