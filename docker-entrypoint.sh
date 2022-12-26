@@ -19,6 +19,9 @@ printf "boot\n"
 printf "===========================================\n"
 printf "BASH_SOURCE: [%s]\n" "$BASH_SOURCE"
 printf "USRNAME: [%s]\n" "$USRNAME"
+printf "PGUSER: [%s]\n" "$PGUSER"
+printf "POSTGRES_USER: [%s]\n" "$POSTGRES_USER"
+printf "POSTGRES_PASSWORD: [%s]\n" "$POSTGRES_PASSWORD"
 printf "CMDARGS: [%s]\n" "$@"
 printf "===========================================\n"
 
@@ -51,19 +54,16 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'postgres' ] && [ "$(id -u)" = '0' ]; then
-        printf "PGDATA: [%s]\n" "$PGDATA"
         mkdir -p "$PGDATA"
         chown -R postgres "$PGDATA"
         chmod 700 "$PGDATA"
 
-        printf "/var/run/postgresql\n"
         mkdir -p /var/run/postgresql
         chown -R postgres /var/run/postgresql
         chmod 775 /var/run/postgresql
 
         # Create the transaction log directory before initdb is run (below) so the directory is owned by the correct user
         if [ "$POSTGRES_INITDB_WALDIR" ]; then
-                printf "POSTGRES_INITDB_WALDIR: [%s]\n" "$POSTGRES_INITDB_WALDIR"
                 mkdir -p "$POSTGRES_INITDB_WALDIR"
                 chown -R postgres "$POSTGRES_INITDB_WALDIR"
                 chmod 700 "$POSTGRES_INITDB_WALDIR"
@@ -73,7 +73,6 @@ if [ "$1" = 'postgres' ] && [ "$(id -u)" = '0' ]; then
 fi
 
 echo "Database location: PGDATA: [$PGDATA]"
-find $PGDATA -ls
 
 if [ "$1" = 'postgres' ]; then
         mkdir -p "$PGDATA"
@@ -94,11 +93,12 @@ if [ "$1" = 'postgres' ]; then
 
                 file_env 'POSTGRES_USER' 'postgres'
                 file_env 'POSTGRES_PASSWORD'
-
                 file_env 'POSTGRES_INITDB_ARGS'
+
                 if [ "$POSTGRES_INITDB_WALDIR" ]; then
                         export POSTGRES_INITDB_ARGS="$POSTGRES_INITDB_ARGS --waldir $POSTGRES_INITDB_WALDIR"
                 fi
+
                 eval 'initdb --username="$POSTGRES_USER" --pwfile=<(echo "$POSTGRES_PASSWORD") '"$POSTGRES_INITDB_ARGS"
 
                 # unset/cleanup "nss_wrapper" bits
