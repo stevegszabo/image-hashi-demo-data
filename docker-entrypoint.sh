@@ -9,7 +9,7 @@ if [ -f $PROFILE ]; then
     printf "Source: [%s]\n" $PROFILE
     source $PROFILE
 else
-    POSTGRES_USER=mydbuser
+    POSTGRES_USER=postgres
     POSTGRES_PASSWORD=mydbpass
     export POSTGRES_USER POSTGRES_PASSWORD
 fi
