@@ -5,7 +5,6 @@ set -o errexit
 PROFILE=/vault/secrets/config
 
 if [ -f $PROFILE ]; then
-    printf "Source: [%s]\n" $PROFILE
     source $PROFILE
 else
     POSTGRES_USER=postgres
