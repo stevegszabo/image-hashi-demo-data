@@ -1,4 +1,4 @@
-FROM postgres:10.5
+FROM postgres:15.1
 
 WORKDIR /
 
